@@ -180,7 +180,12 @@ class PageController extends Controller
                     ->where('donations.donor_email' , $acc->user_email)
                     ->get();
         
-        return view('user.akaun' , compact('acc' , 'guardians' , 'classes', 'students' , 'transactions'));
+        $transaction1s = DB::table('transactions')
+                    ->join('fee_payments', 'transactions.transaction_id', '=', 'fee_payments.transaction_id')
+                    ->where('fee_payments.fee_payment_email' , $acc->user_email)
+                    ->get();
+        
+        return view('user.akaun' , compact('acc' , 'guardians' , 'classes', 'students' , 'transactions', 'transaction1s'));
     }
     
 }

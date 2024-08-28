@@ -71,7 +71,7 @@
                                         <div class="edu-form-check">
                                             <label for="pay-bank">{{$details->student_name}}</label>
                                             <input type="text" name="tabung" value="{{$details->student_name}}">
-                                            <input type="text" name="fund_id" value="{{$details->student_id}}">
+                                            <input type="text" name="student_id" value="{{$details->student_id}}">
                                         </div>
                                     </div>
                                 </div>

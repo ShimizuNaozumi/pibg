@@ -50,11 +50,11 @@ Route::middleware('auth')->namespace('App\Http\Controllers\user')->group(functio
     Route::get('yuran/{id}', [PageController::class, 'yuran'])->name('yuran');
     Route::delete('destroyS/{id}', [ProsesController::class, 'destroyS'])->name('destroyS');
     Route::get('/receipt/{invoice}', [ProsesController::class, 'show'])->name('receipt.show');
-    Route::post('feepayment', [PIBGController::class, 'feepayment']);
-    Route::get('/return', [PIBGController::class, 'return'])->name('return');
-    Route::get('/receipt', [PIBGController::class, 'receipt'])->name('receipt');
-    Route::get('/show-receipt', [PIBGController::class, 'showReceipt']);
-    Route::get('/show/{invoice}', [PIBGController::class, 'show']);
+    Route::post('feepayment', [PIBGController::class, 'feepayment'])->name('feepayment');
+    Route::get('/return', [PIBGController::class, 'return1'])->name('return1');
+    Route::get('/receipt', [PIBGController::class, 'receipt1'])->name('receipt1');
+    Route::get('/show-receipt', [PIBGController::class, 'showReceipt1'])->name('showReceipt1');
+    Route::get('/show/{invoice}', [PIBGController::class, 'show1'])->name('show1');
     Route::get('logoutt',[ProsesController::class, 'logout'])->name('logout_user');
 });
 

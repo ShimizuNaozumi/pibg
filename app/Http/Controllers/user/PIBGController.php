@@ -24,7 +24,7 @@ class PIBGController extends Controller
             'notel' => 'required|string',
             'amount' => 'required|numeric|min:2',
             'tabung' => 'required|string|max:255',
-            'fund_id' => 'required|integer',
+            'student_id' => 'required|integer',
         ]);
 
         try {
@@ -43,7 +43,7 @@ class PIBGController extends Controller
                     'billPriceSetting' => 1,
                     'billPayorInfo' => 1,
                     'billAmount' => $request->amount * 100,
-                    'billReturnUrl' => route('return'),
+                    'billReturnUrl' => route('return1'),
                     'billCallbackUrl' => route('callBack'),
                     'billExternalReferenceNo' => 'PIBGSKTTDI2-' . $randomNumber,
                     'billTo' => $request->name,
@@ -77,7 +77,7 @@ class PIBGController extends Controller
                             'fee_payment_name' => $request->name,
                             'fee_payment_email' => $request->email,
                             'fee_payment_notel' => $request->notel,
-                            'student_id' => $request->fund_id,
+                            'student_id' => $request->student_id,
                             'transaction_id' => $transaction->transaction_id, 
                         ]);
             
@@ -100,7 +100,7 @@ class PIBGController extends Controller
         }
     }
 
-    public function return(Request $request)
+    public function return1(Request $request)
 {
     $billCode = $request->query('billcode');
     $statusId = $request->query('status_id');
@@ -130,7 +130,7 @@ class PIBGController extends Controller
     $transaction->update($transactionData);
 
     if ($statusId == 1) {
-        return redirect()->route('receipt', ['billCode' => $billCode])
+        return redirect()->route('receipt1', ['billCode' => $billCode])
             ->with(['message' => 'Terima kasih kerana telah membuat bayaran yuran.', 'title' => 'Berjaya', 'status' => 'success']);
     } elseif ($statusId == 3) {
         return to_route('index')->with(['message' => 'Proses pembayaran anda gagal.', 'title' => 'Gagal', 'status' => 'error']);
@@ -140,7 +140,7 @@ class PIBGController extends Controller
 }
 
 
-public function receipt(Request $request)
+public function receipt1(Request $request)
 {
     $billCode = $request->query('billCode');
 
@@ -148,8 +148,8 @@ public function receipt(Request $request)
 
     $summary = DB::table('fee_payments')
         ->join('transactions', 'fee_payments.transaction_id', '=', 'transactions.transaction_id')
-        ->join('funds', 'fee_payments.student_id', '=', 'funds.fund_id')
-        ->select('fee_payments.*', 'transactions.*', 'funds.*')
+        ->join('students', 'fee_payments.student_id', '=', 'students.student_id')
+        ->select('fee_payments.*', 'transactions.*', 'students.*')
         ->where('transactions.transaction_code', $billCode)
         ->first();
 
@@ -163,16 +163,16 @@ public function receipt(Request $request)
             'payer_name' => $summary->fee_payment_name,
             'payer_email' => $summary->fee_payment_email,
             'payer_notel' => $summary->fee_payment_notel,
-            'student_name' => $summary->fund_name,
+            'student_name' => $summary->student_name,
         ];        
 
         $html = view('user.receiptpibg', $data)->render();
         $pdf = Pdf::loadHTML($html);
-        return view('user.receipt' , ['transaction' => $transaction]);
+        return view('user.receipt1' , ['transaction' => $transaction]);
     }
 }
 
-public function showReceipt(Request $request)
+public function showReceipt1(Request $request)
 {
     $billCode = $request->query('billCode');
 
@@ -180,8 +180,8 @@ public function showReceipt(Request $request)
 
     $summary = DB::table('fee_payments')
         ->join('transactions', 'fee_payments.transaction_id', '=', 'transactions.transaction_id')
-        ->join('funds', 'fee_payments.student_id', '=', 'funds.fund_id')
-        ->select('fee_payments.*', 'transactions.*', 'funds.*')
+        ->join('students', 'fee_payments.student_id', '=', 'students.student_id')
+        ->select('fee_payments.*', 'transactions.*', 'students.*')
         ->where('transactions.transaction_code', $billCode)
         ->first();
 
@@ -195,7 +195,7 @@ public function showReceipt(Request $request)
             'payer_name' => $summary->fee_payment_name,
             'payer_email' => $summary->fee_payment_email,
             'payer_notel' => $summary->fee_payment_notel,
-            'student_name' => $summary->fund_name,
+            'student_name' => $summary->student_name,
         ];
 
         $html = view('user.receiptpibg', $data)->render();

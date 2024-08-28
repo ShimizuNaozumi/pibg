@@ -348,7 +348,52 @@
                                     <div class="row g-5 justify-content-center">
                                         <div class="col-lg-12">
                                             <div class="login-form-box registration-form">
-                                                <h3 class="title">Senarai Pembayaran</h3>
+                                                <h3 class="title">Senarai Pembayaran Yuran PIBG</h3>
+                                                <table class="table cart-table wishlist-table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col" class="product-title">No. Reference</th>
+                                                            <th scope="col" class="product-price">Method</th>
+                                                            <th scope="col" class="product-status">Jumlah</th>
+                                                            <th scope="col" class="product-add-cart">Resit</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @foreach ($transaction1s as $t1)
+                                                            <tr>
+                                                                <td class="product-title">
+                                                                    {{ $t1->transaction_invoiceno }}
+                                                                </td>
+                                                                <td class="product-price">
+                                                                    {{ $t1->transaction_method }}
+                                                                </td>
+                                                                <td class="product-status">
+                                                                    {{ $t1->transaction_amount }}
+                                                                </td>
+                                                                <td class="product-add-cart">
+                                                                    <button onclick="openReceiptInNewTab('{{ route('receipt.show', $t1->transaction_invoiceno) }}')" class="btn btn-secondary btn-lg" style="width: 50%; padding:10px;">
+                                                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-receipt-2">
+                                                                            <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                                                                            <path d="M5 21v-16a2 2 0 0 1 2 -2h10a2 2 0 0 1 2 2v16l-3 -2l-2 2l-2 -2l-2 2l-2 -2l-3 2"/>
+                                                                            <path d="M14 8h-2.5a1.5 1.5 0 0 0 0 3h1a1.5 1.5 0 0 1 0 3h-2.5m2 0v1.5m0 -9v1.5"/>
+                                                                        </svg>
+                                                                        Resit
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                                <script>
+                                                    function openReceiptInNewTab(url) {
+                                                        window.open(url, '_blank');
+                                                    }
+                                                </script>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-12">
+                                            <div class="login-form-box registration-form">
+                                                <h3 class="title">Senarai Pembayaran Dana</h3>
                                                 <table class="table cart-table wishlist-table">
                                                     <thead>
                                                         <tr>
